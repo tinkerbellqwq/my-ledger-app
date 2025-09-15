@@ -3,78 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>生活记账本</title>
+    <title>记账本</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <style>
-        /* 简单的滚动条美化 */
+        .hidden { display: none; }
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #f1f5f9; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px;}
-        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800">
 
-    <!-- 顶部固定标题和余额 -->
+    <!-- 顶部固定标题和余额 (HTML结构与之前相同) -->
     <header class="sticky top-0 z-10 bg-white/80 backdrop-blur-sm shadow-sm">
         <div class="max-w-2xl mx-auto p-4 text-center">
-            <h1 class="text-2xl font-bold text-slate-700">生活记账本</h1>
+            <h1 class="text-2xl font-bold text-slate-700">记账本</h1>
             <p class="text-slate-500 mt-2">当前余额</p>
             <p class="text-4xl font-bold text-sky-600">¥ <span id="current-balance">0.00</span></p>
         </div>
     </header>
 
-    <!-- 主内容区 -->
+    <!-- 主内容区 (HTML结构与之前相同) -->
     <main class="max-w-2xl mx-auto p-4 pt-6">
-        
-        <!-- 操作区 -->
         <section class="bg-white p-6 rounded-xl shadow-sm mb-8">
             <div class="flex border-b mb-4">
                 <button id="tab-btn-water" class="flex-1 pb-2 text-center font-semibold border-b-2 border-sky-500 text-sky-600">记购水</button>
                 <button id="tab-btn-deposit" class="flex-1 pb-2 text-center font-semibold border-b-2 border-transparent text-slate-400">记存入</button>
             </div>
-
-            <!-- 购水表单 -->
             <form id="form-water">
-                <div class="space-y-4">
-                    <div>
-                        <label for="water-date" class="text-sm font-medium text-slate-600">购买日期</label>
-                        <input type="date" id="water-date" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500" required>
-                    </div>
-                    <div>
-                        <label for="water-quantity" class="text-sm font-medium text-slate-600">数量 (桶)</label>
-                        <input type="number" id="water-quantity" placeholder="输入购买的桶数" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500" required>
-                    </div>
+                 <!-- 表单内容与之前相同 -->
+                 <div class="space-y-4">
+                    <div><label for="water-date" class="text-sm font-medium text-slate-600">购买日期</label><input type="date" id="water-date" class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-md" required></div>
+                    <div><label for="water-quantity" class="text-sm font-medium text-slate-600">数量 (桶)</label><input type="number" id="water-quantity" placeholder="输入购买的桶数" class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-md" required></div>
                     <p class="text-sm text-slate-500">将支出: <span id="water-cost" class="font-bold text-rose-500">¥ 0.00</span> (单价 7.5元/桶)</p>
-                    <button type="submit" class="w-full bg-sky-500 hover:bg-sky-600 text-white font-bold py-2 px-4 rounded-lg transition-colors">确认并扣款</button>
+                    <button type="submit" class="w-full bg-sky-500 hover:bg-sky-600 text-white font-bold py-2 px-4 rounded-lg">确认并扣款</button>
                 </div>
             </form>
-
-            <!-- 存入表单 -->
             <form id="form-deposit" class="hidden">
-                <div class="space-y-4">
-                    <div>
-                        <label for="deposit-date" class="text-sm font-medium text-slate-600">存入日期</label>
-                        <input type="date" id="deposit-date" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500" required>
-                    </div>
-                    <div>
-                        <label for="deposit-amount" class="text-sm font-medium text-slate-600">存入金额 (元)</label>
-                        <input type="number" step="0.01" id="deposit-amount" placeholder="输入要存入的金额" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500" required>
-                    </div>
-                    <button type="submit" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-2 px-4 rounded-lg transition-colors">确认存入</button>
+                 <!-- 表单内容与之前相同 -->
+                 <div class="space-y-4">
+                    <div><label for="deposit-date" class="text-sm font-medium text-slate-600">存入日期</label><input type="date" id="deposit-date" class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-md" required></div>
+                    <div><label for="deposit-amount" class="text-sm font-medium text-slate-600">存入金额 (元)</label><input type="number" step="0.01" id="deposit-amount" placeholder="输入要存入的金额" class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-md" required></div>
+                    <button type="submit" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-2 px-4 rounded-lg">确认存入</button>
                 </div>
             </form>
         </section>
-
-        <!-- 收支明细 -->
-        <section>
-            <h2 class="text-xl font-bold text-slate-700 mb-4">收支明细</h2>
-            <div id="history-list" class="space-y-3">
-                <!-- 记录将动态插入这里 -->
-            </div>
-        </section>
+        <section><h2 class="text-xl font-bold text-slate-700 mb-4">收支明细</h2><div id="history-list" class="space-y-3"></div></section>
     </main>
+
+    <!-- 密码验证弹窗 (Modal) -->
+    <div id="secret-modal" class="hidden fixed inset-0 bg-slate-900 bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white p-6 rounded-lg shadow-xl w-full max-w-sm">
+            <h3 class="text-lg font-bold mb-4">需要验证</h3>
+            <p class="text-sm text-slate-500 mb-4">请输入授权密码以继续操作。</p>
+            <input type="password" id="secret-input" class="block w-full px-3 py-2 border border-slate-300 rounded-md" placeholder="••••••••">
+            <div class="mt-6 flex justify-end space-x-3">
+                <button id="modal-cancel-btn" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-md">取消</button>
+                <button id="modal-confirm-btn" class="px-4 py-2 bg-sky-500 hover:bg-sky-600 text-white rounded-md">确认</button>
+            </div>
+        </div>
+    </div>
+
 
     <script>
         // --- Supabase 配置 ---
@@ -84,142 +74,130 @@
         
         const WATER_PRICE = 7.5;
 
-        document.addEventListener('DOMContentLoaded', () => {
-            // --- DOM 元素 ---
-            const balanceEl = document.getElementById('current-balance');
-            const historyListEl = document.getElementById('history-list');
-            
-            const tabBtnWater = document.getElementById('tab-btn-water');
-            const tabBtnDeposit = document.getElementById('tab-btn-deposit');
-            
-            const formWater = document.getElementById('form-water');
-            const formDeposit = document.getElementById('form-deposit');
+        // --- DOM 元素 ---
+        // (省略了大部分重复的元素获取)
+        const balanceEl = document.getElementById('current-balance');
+        const historyListEl = document.getElementById('history-list');
+        const formWater = document.getElementById('form-water');
+        const formDeposit = document.getElementById('form-deposit');
+        const waterDateInput = document.getElementById('water-date');
+        const waterQuantityInput = document.getElementById('water-quantity');
+        const waterCostEl = document.getElementById('water-cost');
+        const depositDateInput = document.getElementById('deposit-date');
+        const depositAmountInput = document.getElementById('deposit-amount');
+        const secretModal = document.getElementById('secret-modal');
+        const secretInput = document.getElementById('secret-input');
+        const modalCancelBtn = document.getElementById('modal-cancel-btn');
+        const modalConfirmBtn = document.getElementById('modal-confirm-btn');
+        
+        // 存储待处理的交易数据
+        let pendingTransaction = null;
 
-            const waterDateInput = document.getElementById('water-date');
-            const waterQuantityInput = document.getElementById('water-quantity');
-            const waterCostEl = document.getElementById('water-cost');
-
-            const depositDateInput = document.getElementById('deposit-date');
-            const depositAmountInput = document.getElementById('deposit-amount');
-
-            // --- 功能函数 ---
-            const setToday = () => {
-                const today = new Date().toISOString().slice(0, 10);
-                waterDateInput.value = today;
-                depositDateInput.value = today;
-            };
-
-            const renderHistory = (transactions) => {
-                historyListEl.innerHTML = '';
-                if (!transactions || transactions.length === 0) {
-                    historyListEl.innerHTML = `<p class="text-center text-slate-400 py-8">暂无记录</p>`;
-                    return;
-                }
-
-                transactions.forEach(tx => {
-                    const isDeposit = tx.amount > 0;
-                    const amountColor = isDeposit ? 'text-emerald-600' : 'text-rose-600';
-                    const amountSign = isDeposit ? '+' : '';
-
-                    const itemHtml = `
-                        <div class="bg-white p-4 rounded-lg shadow-sm flex justify-between items-center">
-                            <div>
-                                <p class="font-semibold">${tx.description}</p>
-                                <p class="text-sm text-slate-500">${tx.date}</p>
-                            </div>
-                            <p class="font-bold text-lg ${amountColor}">${amountSign} ¥ ${Math.abs(tx.amount).toFixed(2)}</p>
-                        </div>
-                    `;
-                    historyListEl.innerHTML += itemHtml;
-                });
-            };
-
-            const fetchAndRenderAll = async () => {
-                const { data, error } = await supabaseClient
-                    .from('transactions')
-                    .select('*')
-                    .order('date', { ascending: false })
-                    .order('created_at', { ascending: false });
-
-                if (error) {
-                    console.error("获取数据失败:", error);
-                    alert("无法加载数据，请检查网络或联系管理员。");
-                    return;
-                }
-
-                const totalBalance = data.reduce((sum, tx) => sum + tx.amount, 0);
-                balanceEl.textContent = totalBalance.toFixed(2);
-                renderHistory(data);
-            };
-            
-            // --- 事件监听 ---
-            tabBtnWater.addEventListener('click', () => {
-                formWater.classList.remove('hidden');
-                formDeposit.classList.add('hidden');
-                tabBtnWater.classList.add('border-sky-500', 'text-sky-600');
-                tabBtnWater.classList.remove('border-transparent', 'text-slate-400');
-                tabBtnDeposit.classList.add('border-transparent', 'text-slate-400');
-                tabBtnDeposit.classList.remove('border-sky-500', 'text-sky-600');
+        // --- 核心功能 ---
+        const fetchAndRenderAll = async () => {
+            // 这个函数和之前完全一样
+            const { data, error } = await supabaseClient.from('transactions').select('*').order('date', { ascending: false }).order('created_at', { ascending: false });
+            if (error) { console.error("获取数据失败:", error); return; }
+            const totalBalance = data.reduce((sum, tx) => sum + tx.amount, 0);
+            balanceEl.textContent = totalBalance.toFixed(2);
+            // (renderHistory 函数也和之前一样)
+            historyListEl.innerHTML = '';
+            if (!data || data.length === 0) { historyListEl.innerHTML = `<p class="text-center text-slate-400 py-8">暂无记录</p>`; return; }
+            data.forEach(tx => {
+                const isDeposit = tx.amount > 0;
+                const amountColor = isDeposit ? 'text-emerald-600' : 'text-rose-600';
+                const amountSign = isDeposit ? '+' : '';
+                const itemHtml = `<div class="bg-white p-4 rounded-lg shadow-sm flex justify-between items-center"><div><p class="font-semibold">${tx.description}</p><p class="text-sm text-slate-500">${tx.date}</p></div><p class="font-bold text-lg ${amountColor}">${amountSign} ¥ ${Math.abs(tx.amount).toFixed(2)}</p></div>`;
+                historyListEl.innerHTML += itemHtml;
             });
+        };
 
-            tabBtnDeposit.addEventListener('click', () => {
-                formDeposit.classList.remove('hidden');
-                formWater.classList.add('hidden');
-                tabBtnDeposit.classList.add('border-sky-500', 'text-sky-600');
-                tabBtnDeposit.classList.remove('border-transparent', 'text-slate-400');
-                tabBtnWater.classList.add('border-transparent', 'text-slate-400');
-                tabBtnWater.classList.remove('border-sky-500', 'text-sky-600');
+        const handleFormSubmit = (data) => {
+            pendingTransaction = data; // 暂存交易数据
+            secretModal.classList.remove('hidden'); // 显示密码弹窗
+            secretInput.focus();
+        };
+        
+        // --- 事件监听 ---
+        formWater.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const quantity = parseInt(waterQuantityInput.value);
+            const cost = quantity * WATER_PRICE;
+            handleFormSubmit({
+                date_val: waterDateInput.value,
+                description_val: `购买桶装水 x ${quantity}桶`,
+                amount_val: -cost
             });
-            
-            waterQuantityInput.addEventListener('input', () => {
-                const quantity = parseInt(waterQuantityInput.value) || 0;
-                waterCostEl.textContent = `¥ ${(quantity * WATER_PRICE).toFixed(2)}`;
-            });
-
-            formWater.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                const quantity = parseInt(waterQuantityInput.value);
-                const cost = quantity * WATER_PRICE;
-
-                const { error } = await supabaseClient.from('transactions').insert([{
-                    date: waterDateInput.value,
-                    description: `购买桶装水 x ${quantity}桶`,
-                    amount: -cost // 支出，所以是负数
-                }]);
-
-                if (error) {
-                    alert('保存失败: ' + error.message);
-                } else {
-                    formWater.reset();
-                    waterCostEl.textContent = '¥ 0.00';
-                    setToday();
-                    await fetchAndRenderAll();
-                }
-            });
-
-            formDeposit.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                const amount = parseFloat(depositAmountInput.value);
-
-                const { error } = await supabaseClient.from('transactions').insert([{
-                    date: depositDateInput.value,
-                    description: '存入余额',
-                    amount: amount // 存入，所以是正数
-                }]);
-
-                if (error) {
-                    alert('操作失败: ' + error.message);
-                } else {
-                    formDeposit.reset();
-                    setToday();
-                    await fetchAndRenderAll();
-                }
-            });
-
-            // --- 初始加载 ---
-            setToday();
-            fetchAndRenderAll();
         });
+
+        formDeposit.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const amount = parseFloat(depositAmountInput.value);
+            handleFormSubmit({
+                date_val: depositDateInput.value,
+                description_val: '存入余额',
+                amount_val: amount
+            });
+        });
+        
+        modalCancelBtn.addEventListener('click', () => {
+            secretModal.classList.add('hidden');
+            secretInput.value = '';
+            pendingTransaction = null;
+        });
+
+        modalConfirmBtn.addEventListener('click', async () => {
+            if (!pendingTransaction || !secretInput.value) return;
+            
+            // 调用我们创建的数据库函数 (RPC)
+            const { error } = await supabaseClient.rpc('add_transaction', {
+                ...pendingTransaction,
+                secret_val: secretInput.value
+            });
+
+            if (error) {
+                // 如果密码错误，后台会返回 'Invalid secret'
+                if (error.message.includes('Invalid secret')) {
+                    alert('密码错误！');
+                } else {
+                    alert('操作失败: ' + error.message);
+                }
+            } else {
+                // 成功后，重置表单并刷新数据
+                formWater.reset();
+                formDeposit.reset();
+                waterCostEl.textContent = '¥ 0.00';
+                await fetchAndRenderAll();
+            }
+
+            // 无论成功失败，都关闭弹窗
+            modalCancelBtn.click();
+        });
+
+        // --- 其他事件监听和初始化 (与之前相同) ---
+        // (此处省略了 setToday, tab 切换, waterQuantityInput 的 input 事件)
+        const setToday = () => {
+            const today = new Date().toISOString().slice(0, 10);
+            waterDateInput.value = today;
+            depositDateInput.value = today;
+        };
+        document.getElementById('tab-btn-water').addEventListener('click', (e) => {
+             document.getElementById('form-water').classList.remove('hidden'); document.getElementById('form-deposit').classList.add('hidden');
+             e.target.classList.add('border-sky-500', 'text-sky-600'); e.target.classList.remove('border-transparent', 'text-slate-400');
+             document.getElementById('tab-btn-deposit').classList.add('border-transparent', 'text-slate-400'); document.getElementById('tab-btn-deposit').classList.remove('border-sky-500', 'text-sky-600');
+        });
+        document.getElementById('tab-btn-deposit').addEventListener('click', (e) => {
+             document.getElementById('form-deposit').classList.remove('hidden'); document.getElementById('form-water').classList.add('hidden');
+             e.target.classList.add('border-sky-500', 'text-sky-600'); e.target.classList.remove('border-transparent', 'text-slate-400');
+             document.getElementById('tab-btn-water').classList.add('border-transparent', 'text-slate-400'); document.getElementById('tab-btn-water').classList.remove('border-sky-500', 'text-sky-600');
+        });
+        waterQuantityInput.addEventListener('input', () => {
+            const quantity = parseInt(waterQuantityInput.value) || 0;
+            waterCostEl.textContent = `¥ ${(quantity * WATER_PRICE).toFixed(2)}`;
+        });
+
+        setToday();
+        fetchAndRenderAll();
     </script>
 </body>
 </html>
